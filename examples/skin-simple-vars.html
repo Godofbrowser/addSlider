@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>addSlider: Simple Skin Variables</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+  <script src='examples.js'></script>
+  <script src='../src/addSlider.js'></script>
+  <link rel='stylesheet' href='examples.css' />
+  <link rel='stylesheet' href='../src/skins/addSlider.skin-simple.css?size=2&primary=%2366bb66' />
+</head>
+
+<body>
+  <h1>addSlider: Simple Skin Variables</h1>
+  <p>Currently there is only one skin included in this repository, it's called "Simple".</p>
+  <p>To import this skin into your page include it as a CSS file in the head.</p>
+  <pre><code><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"path/to/src/skins/addSlider.skin-simple.css"</span> /&gt;</span>
+</code></pre>
+  <h3 id="skin-variables">Skin Variables</h3>
+  <p>The "Simple" skin is a dynamic (or PHP generated) style sheet which allows you to pass URL (GET) parameters to the skin and make basic changes to it including color and size.</p>
+  <p>Here is a list of the available Skin Variables:</p>
+  <ul>
+<li><strong>size</strong>: <em>number</em> = <code>1</code><ul>
+<li>The scale value for the slider.</li>
+<li><code>1</code> = Normal size</li>
+<li><code>0.5</code> = Half size</li>
+<li><code>1</code> = Double size</li>
+<li>Any flot value is allowed.</li>
+</ul>
+</li>
+<li><strong>primary</strong>: <em>color</em> = <code>#3366ff</code><ul>
+<li>The primary color of the plugin, because this plugin only has 1 color this is the only one in use, but other "Simple" Skins for other addUI plguins use other colors.</li>
+</ul>
+</li>
+</ul>
+  <h4 id="using-skin-variables">Using Skin Variables</h4>
+  <p>Add these variables onto the URL when you import the skin into your document.</p>
+<pre class='html'><code><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"path/to/src/skins/addSlider.skin-simple.css?size=2&amp;primary=%2366bb66"</span> /&gt;</span>
+</code></pre>
+  <h5 id="uri-encoding">URI Encoding</h5>
+  <p>Remember to URI encode your variables meaning the "#" character must be turned into "%23"</p>
+  <h3 id="static-skins">Static Skins</h3>
+  <p>Skins are also provided as standard CSS files without skin variables if you cant use or don't wish to use the PHP dynamic skins, look for a file named the same as the skin but with "-static" at the end of the filename.</p>
+  <h2>Example:</h2>
+  <p><br></p>
+  <input data-addui="slider" value="30" />
+</body>
+</html>

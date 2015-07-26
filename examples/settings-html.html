@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>addSlider: HTML Setting</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+  <script src='examples.js'></script>
+  <script src='../src/addSlider.js'></script>
+  <link rel='stylesheet' href='examples.css' />
+  <link rel='stylesheet' href='../src/skins/addSlider.skin-simple.css' />
+</head>
+
+<body>
+  <h1>addSlider: HTML Setting</h1>
+  <p>To use these settings using the HTML Setup Method pass each setting into the plugin using the <code>data-{setting name}="{setting value}"</code> attribute.</p>
+  <p><strong>Available Settings</strong></p>
+  <ul>
+    <li><strong>min</strong>: <em>number</em> = <code>0</code>
+      <ul>
+        <li>The miniumum possible value on the slider.</li>
+      </ul>
+    </li>
+    <li><strong>max</strong>: <em>number</em> = <code>100</code>
+      <ul>
+        <li>The maximum possible value on the slider.</li>
+      </ul>
+    </li>
+    <li><strong>step</strong>: <em>number</em> = <code>0.01</code>
+      <ul>
+        <li>The minium incrament amount allowed.</li>
+      </ul>
+    </li>
+    <li><strong>range</strong>: <em>boolean</em> = <code>false</code>
+      <ul>
+        <li><code>false</code> = The slider is for a single vale (1 handle).</li>
+        <li><code>true</code> = The slide is used to select a range of values (2 handles).</li>
+      </ul>
+    </li>
+    <li><strong>activetimeout</strong>: <em>number</em> = <code>750</code>
+      <ul>
+        <li>The time after the slide is over when the slider is still in its "active" state. This time is in milliseconds.</li>
+      </ul>
+    </li>
+    <li><strong>formatter</strong>: <em>function</em> = <code>function(x){return x;}</code>
+      <ul>
+        <li>A function used to format the value to be displayed in the slide.</li>
+      </ul>
+    </li>
+    <li><strong>onready</strong>: <em>function</em> = <code>function(){}</code>
+      <ul>
+        <li>A callback function executed when the plugin is ready.</li>
+        <li>The initial value is passed in as the first argument, and second argument if it is a range slider.</li>
+      </ul>
+    </li>
+    <li><strong>onslidestart</strong>: <code>function(){}</code>
+      <ul>
+        <li>A callback function executed when a slide starts on slider.</li>
+        <li>The new value is passed in as the first argument, and second argument if it is a range slider.</li>
+      </ul>
+    </li>
+    <li><strong>onslide</strong>: <code>function(){}</code>
+      <ul>
+        <li>A callback function executed each step (every 7-10 millieseconds) of a slide.</li>
+        <li>The new value is passed in as the first argument, and second argument if it is a range slider.</li>
+      </ul>
+    </li>
+    <li><strong>onslideend</strong>: <code>function(){}</code>
+      <ul>
+        <li>A callback function executed at the end of a slide.</li>
+        <li>The new value is passed in as the first argument, and second argument if it is a range slider.</li>
+      </ul>
+    </li>
+    <li><strong>onchange</strong>: <code>function(){}</code>
+      <ul>
+        <li>A callback function executed when the slider value is changed.</li>
+        <li>The new value is passed in as the first argument, and second argument if it is a range slider.</li>
+      </ul>
+    </li>
+  </ul>
+  <h2>Example: Min - Max - Step</h2>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-min</span>=<span class="value">"10"</span>
+  <span class="attribute">data-max</span>=<span class="value">"20"</span>
+  <span class="attribute">data-step</span>=<span class="value">"1"</span>
+  <span class="attribute">value</span>=<span class="value">"12"</span>
+/&gt;</span>
+</code></pre>
+  <p><br></p>
+  <input
+    data-addui="slider"
+    data-min="10"
+    data-max="20"
+    data-step="1"
+    value="12"
+  />
+  <h2>Example: Range</h2>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-range</span>=<span class="value">"true"</span>
+  <span class="attribute">data-step</span>=<span class="value">"1"</span>
+  <span class="attribute">value</span>=<span class="value">"25,75"</span>
+/&gt;</span>
+</code></pre>
+  <p><br></p>
+  <input
+    data-addui="slider"
+    data-range="true"
+    data-step="1"
+    value="25,75"
+  />
+  <h2>Example: Active Timeout</h2>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-activetimeout</span>=<span class="value">"3000"</span>
+/&gt;</span>
+</code></pre>
+  <p><br></p>
+  <input
+    data-addui="slider"
+    data-activetimeout="3000"
+  />
+  
+  <h2>Example: Formatter</h2>
+  <script>
+    function usd(x){
+      return "$"+x.toFixed(2);
+    }
+    function inch(x){
+      return x.toFixed(1)+"\"";
+    }
+  </script>
+<pre class='js'><code><span class="function"><span class="keyword">function</span> <span class="title">usd</span><span class="params">(x)</span>{</span>
+  <span class="keyword">return</span> <span class="string">"$"</span>+x.toFixed(<span class="number">2</span>);
+}
+<span class="function"><span class="keyword">function</span> <span class="title">inch</span><span class="params">(x)</span>{</span>
+  <span class="keyword">return</span> x.toFixed(<span class="number">1</span>)+<span class="string">"\""</span>;
+}
+</code></pre>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-formatter</span>=<span class="value">"usd"</span>
+  <span class="attribute">data-max</span>=<span class="value">"10"</span>
+/&gt;</span>
+</code></pre>
+  <p><br></p>
+  <input
+    data-addui="slider"
+    data-formatter="usd"
+    data-max="10"
+  />
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-formatter</span>=<span class="value">"inch"</span>
+  <span class="attribute">data-step</span>=<span class="value">"0.5"</span>
+/&gt;</span>
+</code></pre>
+  <p><br></p>
+  <input
+    data-addui="slider"
+    data-formatter="inch"
+    data-step="0.5"
+  />
+  <h2>Example: Callbacks</h2>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input
+</span>  <span class="attribute">data-addui</span>=<span class="value">"slider"</span>
+  <span class="attribute">data-step</span>=<span class="value">"1"</span>
+  <span class="attribute">data-onready</span>=<span class="value">"console.log(arguments[0])"</span>
+  <span class="attribute">data-onslidestart</span>=<span class="value">"console.log('slide start')"</span>
+  <span class="attribute">data-onslide</span>=<span class="value">"console.log('slide')"</span>
+  <span class="attribute">data-onslideend</span>=<span class="value">"console.log('slide end')"</span>
+  <span class="attribute">data-onchange</span>=<span class="value">"console.log(arguments[0])"</span>
+/&gt;</span>
+</code></pre>
+<p><br></p>
+  <input
+    data-addui="slider"
+    data-step="1"
+    data-onready="console.log(arguments[0])"
+    data-onslidestart="console.log('slide start')"
+    data-onslide="console.log('slide')"
+    data-onslideend="console.log('slide end')"
+    data-onchange="console.log(arguments[0])"
+  />
+</body>
+
+</html>

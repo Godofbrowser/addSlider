@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <title>addSlider: JavaScript / jQuery Setting</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+  <script src='examples.js'></script>
+  <script src='../src/addSlider.js'></script>
+  <link rel='stylesheet' href='examples.css' />
+  <link rel='stylesheet' href='../src/skins/addSlider.skin-simple.css' />
+</head>
+<body>
+  <h1>addSlider: JavaScript / jQuery Setting</h1>
+  <p>For the JavaScript Setup method pass in a key-value-pair object as the the second argument. For the jQuery Setup method pass in a key-value-pair object as the first argument.</p>
+  <p>For the full list of settings read the <a href='../README.md'>Readme</a> or view the <a href='settings-html.html'>HTML Settings</a> example.</p>
+  <h2>Example:</h2>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"slider1"</span> <span class="attribute">value</span>=<span class="value">"200,800"</span> /&gt;</span>
+</code></pre>
+<pre class='js'><code>$<span class="tag">add</span><span class="class">.Slider</span>("<span class="id">#slider1</span>", <span class="rules">{
+  <span class="rule"><span class="attribute">min</span>:<span class="value"> <span class="number">100</span>,
+  max: <span class="number">1000</span>,
+  step: <span class="number">25</span>,
+  range: true,
+  formatter: <span class="function">function(x)</span>{return <span class="string">"$"</span>+x}</span></span></span>
+});
+</code></pre>
+  <p><br></p>
+  <input id="slider1" value="200,800" />
+  <script>
+    $add.Slider("#slider1", {
+      min: 100,
+      max: 1000,
+      step: 25,
+      range: true,
+      formatter: function(x){return "$"+x}
+    });
+  </script>
+  <p>Alternativly the same can be accomplished with jQuery:</p>
+<pre class='jquery'><code>$("<span class="id">#slider1</span>")<span class="class">.addSlider</span>(<span class="rules">{
+  <span class="rule"><span class="attribute">min</span>:<span class="value"> <span class="number">100</span>,
+  max: <span class="number">1000</span>,
+  step: <span class="number">25</span>,
+  range: true,
+  formatter: <span class="function">function(x)</span>{return <span class="string">"$"</span>+x}</span></span></span>
+});
+</code></pre>
+</body>
+</html>

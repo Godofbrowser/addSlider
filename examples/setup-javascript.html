@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <title>addSlider: JavaScript Setup</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+  <script src='examples.js'></script>
+  <script src='../src/addSlider.js'></script>
+  <link rel='stylesheet' href='examples.css' />
+  <link rel='stylesheet' href='../src/skins/addSlider.skin-simple.css' />
+</head>
+<body>
+  <h1>addSlider: JavaScript Setup</h1>
+  <p>You can setup an element as a slider using the JavaScript function <code>$add.Slider(selector, settings)</code>.</p>
+  <p>For information on how to set the initial value or get the value read the <a href='../README.md'>Readme</a> or view the <a href='setup-html.html'>HTML Setup</a> example.</p>
+  <h2>Example:</h2>
+  <p>Create your <code>&lt;input&gt;</code> element using HTML:</p>
+<pre class='html'><code><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"slider1"</span> /&gt;</span>
+</code></pre>
+  <p>Now after the DOM is ready call the JavaScript function:</p>
+<pre class='js'><code><span class="variable">$add</span>.<span class="constant">Slider</span>(<span class="string">"#slider1"</span>);
+</code></pre>
+  <input id="slider1" />
+  <script>
+    $add.Slider("#slider1");
+  </script>
+</body>
+</html>
