@@ -1,6 +1,6 @@
 #addSlider
 
-v1.0.0
+v1.1.0
 
 A slider that allows the selecting of value by moving a handle along a track.
 
