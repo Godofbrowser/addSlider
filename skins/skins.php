@@ -382,6 +382,13 @@ class Adjust {
     return $css;
   }
   
+  public static function cssAlpha($css, $adjustment){
+    $rgba = Format::css2rgba($css);
+    $rgba = Adjust::rgbaAlpha($rgba, $adjustment);
+    $css = Format::rgba2css($rgba);
+    return $css;
+  }
+  
   public static function size($size, $factor = 1, $adjustment = 0){
     $units;
     $value;
@@ -533,8 +540,112 @@ class Format {
     $gv = $gv*100;
     return $gv;
   }
-  
 }
-function psize($size, $factor = 1, $adjustment = 0){
-  echo Adjust::size($size, $factor, $adjustment);
-}
+
+  $vars = array();
+  /* Save Key-Value */
+  function s($k, $v = false){
+    if(r($k))
+      $v = r($k);
+    $GLOBALS['vars'][$k] = $v;
+  };
+  /* Get Key-Value */
+  function g($k){
+    if(!isset($GLOBALS['vars'][$k])){
+      s($k, r($k));
+    }
+    return $GLOBALS['vars'][$k];
+  };
+  /* Request Key-Value */
+  function r($k){
+    if(isset($_REQUEST[$k]))
+      return $_REQUEST[$k];
+    else return false;
+  };
+  /* Output Key-Value */
+  function o($k){
+    echo g($k);
+  };
+  /* If false make % darker */
+  function d($k, $t, $p = 10){
+    if(
+      g($k)==false
+    ){
+      $p-=2*$p;
+      s($k, Adjust::cssBrightness(g($t), $p));
+    }
+  };
+  /* If false make % lighter */
+  function l($k, $t, $p = 10){
+    if(g($k)==false){
+      s($k, Adjust::cssBrightness(g($t), $p));
+    }
+  };
+  /* Output Number */
+  function onum($k, $factor = 1, $adjustment = 0){
+    echo Adjust::size(g($k), $factor, $adjustment);
+  };
+  /* Out Sizze */
+  function size($factor = 1, $adjustment = 0){
+    echo Adjust::size(g('size'), $factor, $adjustment);
+  }
+  /* Get Size */
+  function gs($k, $factor = 1, $adjustment = 0){
+    return Adjust::size(g($k), $factor, $adjustment);
+  };
+  /* Copy if false */
+  function c($k, $t){
+    s($k);
+    if(!g($k))
+      s($k, g($t));
+  };
+  /* Copy if lighter than and false */
+  function cl($key, $test, $default, $percentage = 50){
+    if(g($key)===false){
+      if(Format::css2grayValue(g($test)) > $percentage)
+        s($key, g($test));
+      else
+        s($key, $default);
+    }
+  };
+  /* Copy if darker than test and false */
+  function cd($key, $test, $default, $percentage = 50){
+    if(g($key)===false){
+      if(Format::css2grayValue(g($test)) < $percentage)
+        s($key, g($test));
+      else
+        s($key, $default);
+    }
+  };
+  /* Output if Darker */
+  function oifd($test, $then, $else, $percentage = 50){
+    if(Format::css2grayValue(g($test)) < $percentage)
+      o($then);
+    else
+      o($else);
+  };
+  /* Output if Lighter */
+  function oifl($test, $then, $else, $percentage = 50){
+    if(Format::css2grayValue(g($test)) > $percentage)
+      o($then);
+    else
+      o($else);
+  };
+  /* Text Color */
+  function text($bg){
+    oifd($bg, 'textLight', 'textDark');
+  };
+
+  function logComment($var){
+    echo "/* ";
+    if($var===true)
+      echo "true";
+    else if($var===false)
+      echo "false";
+    else if($var===null)
+      echo "null";
+    else
+      print_r($var);
+    echo " */
+";
+  }
