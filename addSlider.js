@@ -202,5 +202,5 @@ $add.auto.Slider=function(){if(!$add.auto.disable)$("*[data-addui=slider]").addS
 $(function(){
   $add.auto.Dragging();
   $add.auto.Slider();
-  $.get("http://api.add-ui.com/version/?plugin=slider",function(o){$add.version.Slider!=o.version&&console.log("addSlider is out of date.\nVersion "+o.version+" was released on "+o.updated+".\nVisit http://add-ui.com/plugins/addslider/ for more information.")});
+  $.get("http://api.add-ui.com/version/?plugin=slider",function(o){$add.version.Slider!=o.version&&console.log("addSlider is out of date.\nVersion "+o.version+" was released on "+o.updated+".\nVisit http://add-ui.com/#!/plugin-slider for more information.")});
 });
