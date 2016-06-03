@@ -1,0 +1,182 @@
+/* Variables */
+$theme: "light";
+
+/* Colors */
+$primary: #3f51b5;
+$accent: #ff4081;
+$error: #f44336;
+$warning: #ff9800;
+$success: #4caf50;
+
+/* Sizes */
+$mobileSize: 600px;
+$tabletSize: 960px;
+
+@function palette($color, $amount: 500){
+  @if($amount <= 50){ // 50
+    @return lighten($color, 40%);
+  }@if($amount > 50 and $amount < 150){ // 100
+    @return lighten($color, 35%);
+  }
+  @if($amount >= 150 and $amount < 250){ // 200
+    @return lighten($color, 25%);
+  }
+  @if($amount >= 250 and $amount < 350){ // 300
+    @return lighten($color, 15%);
+  }
+  @if($amount >= 350 and $amount < 450){ // 400
+    @return lighten($color, 10%);
+  }
+  @if($amount >= 450 and $amount < 550){ // 500
+    @return $color;
+  }
+  @if($amount >= 550 and $amount < 650){ // 600
+    @return darken($color, 7%);
+  }
+  @if($amount >= 650 and $amount < 750){ // 700
+    @return darken($color, 12%);
+  }
+  @if($amount >= 750 and $amount < 850){ // 800
+    @return darken($color, 17%);
+  }
+  @if($amount > 849){ // 900
+    @return darken($color, 25%);
+  }
+  
+}
+@function text($color, $amount: 1){
+  @if(lightness($color) >= 70%){
+    @if($amount == 1){@return rgba(#000,0.87)}
+    @if($amount == 2){@return rgba(#000,0.54)}
+    @if($amount == 3){@return rgba(#000,0.38)}
+    @if($amount == 4){@return rgba(#000,0.12)}
+  } @else {
+    @if($amount == 1){@return rgba(#fff,1)}
+    @if($amount == 2){@return rgba(#fff,0.70)}
+    @if($amount == 3){@return rgba(#fff,0.50)}
+    @if($amount == 4){@return rgba(#fff,0.30)}
+  }
+}
+@function neutral($amount: 3){
+  @if($theme == "dark"){
+    @if($amount == 1){@return #000000;}
+    @if($amount == 2){@return #212121;}
+    @if($amount == 3){@return #303030;}
+    @if($amount == 4){@return #424242;}
+  } @else {
+    @if($amount == 1){@return #e0e0e0;}
+    @if($amount == 2){@return #f5f5f5;}
+    @if($amount == 3){@return #fafafa;}
+    @if($amount == 4){@return #ffffff;}
+  }
+}
+@function adjust($color, $adjustment: 100, $base: 500){
+  @if($theme == "dark"){
+    $adjustment: 0 - $adjustment;
+  }
+  @return palette($color, $base+$adjustment);
+}
+
+.addui-slider {
+  display: block;
+  width: calc(100% - 50px);
+  height: 50px;
+  margin: 16px 25px;
+  
+  box-sizing:border-box;
+  *{box-sizing:border-box}
+  
+  &:not(.addui-slider-isrange) {
+    cursor: pointer;
+  }
+  
+  .addui-slider-track {
+    display: block;
+    position: relative;
+    height: 4px;
+    width: 100%;
+    background: text(neutral(), 3);
+    border-radius: 4px;
+    top: 23px;
+    
+    .addui-slider-range {
+      display: block;
+      height: 4px;
+      background: $primary;
+      border-radius: 4px;
+      position: relative;
+    }
+    
+    .addui-slider-handle {
+      display: block;
+      width: 50px;
+      height: 50px;
+      background: rgba($primary, 0);
+      box-shadow: 0 0 5px rgba($primary, 0);
+      position: absolute;
+      top: -25px;
+      transform: translateX(-50%);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 1s, box-shadow 1s;
+      
+      .addui-slider-value {
+        display: block;
+        float: right;
+        background: rgba($primary, 0);
+        width: 50px;
+        height: 50px;
+        border-radius: 0 50% 50% 50%;
+        transform: rotate(-135deg);
+        margin-top: -60px;
+        color: text($primary);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s, background 1s;
+        
+        span {
+          display: block;
+          transform: rotate(135deg);
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          line-height: 50px;
+        }
+      }
+      
+      &:hover {
+        box-shadow: 0 0 5px rgba($primary, 0.5);
+        
+        .addui-slider-value {
+          opacity: 1;
+          background: rgba($primary, 0.5);
+        }
+      }
+      
+      &.addui-slider-handle-active {
+        background: rgba($primary, 0.5);
+        box-shadow: 0 0 5px rgba($primary, 0.5);
+        
+        .addui-slider-value {
+          background: rgba($primary, 0.75);
+          opacity: 1;
+        }
+      }
+      
+      
+      &:after {
+        display: block;
+        content: " ";
+        width: 25px;
+        height: 25px;
+        background: $primary;
+        border-radius: 25px;
+        position: relative;
+        top: 13px;
+        left: 13px;
+      }
+    }
+    
+  }
+}
+
