@@ -6,11 +6,6 @@ $add.SliderObj = function(settings){
   function toNearest(num, x){
     return (Math.round(num * (1/x)) / (1/x));
   }
-  function per2val(per){
-    var range = this._settings.max - this._settings.min;
-    return toNearest((per * range / 100, this._settings.step));
-  }
-  function toFunc(n){if("function"==typeof n)return n;if("string"==typeof n){if(void 0!=window[n]&&"function"==typeof window[n])return window[n];try{return new Function(n)}catch(t){}}return function(){return n}};
   function betterParseFloat(t){return isNaN(parseFloat(t))&&t.length>0?betterParseFloat(t.substr(1)):parseFloat(t)};
   
   this._settings = {
