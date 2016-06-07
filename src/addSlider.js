@@ -1,5 +1,5 @@
 if($add===undefined)var $add={version:{},auto:{disabled:false}};
-$add.version.Slider = "2.0.0";
+$add.version.Slider = "2.0.1";
 $add.SliderObj = function(settings){
   Obj.apply(this);
   
@@ -14,6 +14,7 @@ $add.SliderObj = function(settings){
   function betterParseFloat(t){return isNaN(parseFloat(t))&&t.length>0?betterParseFloat(t.substr(1)):parseFloat(t)};
   
   this._settings = {
+    direction: "horizontal",
     min: 0,
     max: 100,
     step: 0.1,
@@ -73,8 +74,14 @@ $add.SliderObj = function(settings){
       if(!this._settings.range){
         var offset = betterParseFloat(this._settings.value) - this._settings.min;
         var per = (toNearest(offset, this._settings.step) / (this._settings.max - this._settings.min))  * 100;
-        this._elements.find(".addui-slider-handle").css("left", per+"%");
-        this._elements.find(".addui-slider-range").css("width", per+"%");
+        if(this._settings.direction == "vertical"){
+          this._elements.find(".addui-slider-handle").css("bottom", per+"%");
+          this._elements.find(".addui-slider-range").css("height", per+"%");
+          this._elements.find(".addui-slider-range").css("bottom", "0%");
+        } else {
+          this._elements.find(".addui-slider-handle").css("left", per+"%");
+          this._elements.find(".addui-slider-range").css("width", per+"%");
+        }
         this._elements.find(".addui-slider-value span").html(toFunc(this._settings.formatter).call(this, this._settings.value));
       } else {
         var l = (toNearest(parseFloat(this._settings.value.split(",")[0]), this._settings.step));
@@ -86,9 +93,15 @@ $add.SliderObj = function(settings){
         var hPer = (offsetH / range) * 100;
         this._elements.each(function(i,el){
           var $el = $(el);
-          $el.find(".addui-slider-handle").eq(0).css("left", lPer+"%");
-          $el.find(".addui-slider-handle").eq(1).css("left", hPer+"%");
-          $el.find(".addui-slider-range").css("left", lPer+"%").css("width", (hPer-lPer)+"%");
+          if(self._settings.direction == "vertical"){
+            $el.find(".addui-slider-handle").eq(0).css("bottom", lPer+"%");
+            $el.find(".addui-slider-handle").eq(1).css("bottom", hPer+"%");
+            $el.find(".addui-slider-range").css("bottom", lPer+"%").css("height", (hPer-lPer)+"%");
+          } else {
+            $el.find(".addui-slider-handle").eq(0).css("left", lPer+"%");
+            $el.find(".addui-slider-handle").eq(1).css("left", hPer+"%");
+            $el.find(".addui-slider-range").css("left", lPer+"%").css("width", (hPer-lPer)+"%");
+          }
           $el.find(".addui-slider-handle").eq(0).find(".addui-slider-value span").html(toFunc(self._settings.formatter).call(self, l));
           $el.find(".addui-slider-handle").eq(1).find(".addui-slider-value span").html(toFunc(self._settings.formatter).call(self, h));
         });
@@ -98,7 +111,7 @@ $add.SliderObj = function(settings){
   
   this.renderer = function(){
     var self = this;
-    var $slider = $("<div class='addui-slider "+((this._settings.range)?"addui-slider-isrange":"")+" "+this._settings.class+"' "+((this._settings.id)?"id='"+this._settings.id+"'":"")+"></div>");
+    var $slider = $("<div class='addui-slider addui-slider-"+this._settings.direction+((this._settings.range)?" addui-slider-isrange":"")+" "+this._settings.class+"' "+((this._settings.id)?"id='"+this._settings.id+"'":"")+"></div>");
     var $input = $("<input class='addui-slider-input' type='hidden' name='"+this._settings.name+"' value='"+this._settings.value+"' />").appendTo($slider);
     var $track = $("<div class='addui-slider-track'></div>").appendTo($slider);
     var $range = $("<div class='addui-slider-range'></div>").appendTo($track);
@@ -108,13 +121,24 @@ $add.SliderObj = function(settings){
       var activeTimer = null;
       function dragHandler(e){
         e.preventDefault();
-        if(e.type == "touchmove")
-          var x = e.originalEvent.changedTouches[0].pageX;
-        else
-          var x = e.pageX;
-        var sliderX = $slider.offset().left;
-        var offsetX = x - sliderX;
-        var offsetPer = (offsetX / $slider.width()) * 100;
+        if(self._settings.direction == "vertical"){
+          if(e.type == "touchmove")
+            var y = e.originalEvent.changedTouches[0].pageY;
+          else
+            var y = e.pageY;
+          var sliderY = $slider.offset().top + $slider.height();
+          var offsetY = sliderY - y;
+          var offsetPer = (offsetY / $slider.height()) * 100;
+        } else {
+          if(e.type == "touchmove")
+            var x = e.originalEvent.changedTouches[0].pageX;
+          else
+            var x = e.pageX;
+          var sliderX = $slider.offset().left;
+          var offsetX = x - sliderX;
+          var offsetPer = (offsetX / $slider.width()) * 100;
+        }
+        
         var val = toNearest((offsetPer / 100) * (self._settings.max - self._settings.min), self._settings.step) + self._settings.min;
         val = Math.min(self._settings.max,Math.max(self._settings.min,val));
         self.value = toNearest(val, self._settings.step);
@@ -133,13 +157,25 @@ $add.SliderObj = function(settings){
       });
       $slider.on("click", function(e){
         e.preventDefault();
-        if(e.type == "touchmove")
-          var x = e.originalEvent.changedTouches[0].pageX;
-        else
-          var x = e.pageX;
-        var sliderX = $slider.offset().left;
-        var offsetX = x - sliderX;
-        var offsetPer = (offsetX / $slider.width()) * 100;
+        
+        if(self._settings.direction == "vertical"){
+          if(e.type == "touchmove")
+            var y = e.originalEvent.changedTouches[0].pageY;
+          else
+            var y = e.pageY;
+          var sliderY = $slider.offset().top + $slider.height();
+          var offsetY = sliderY - y;
+          var offsetPer = (offsetY / $slider.height()) * 100;
+        } else {
+          if(e.type == "touchmove")
+            var x = e.originalEvent.changedTouches[0].pageX;
+          else
+            var x = e.pageX;
+          var sliderX = $slider.offset().left;
+          var offsetX = x - sliderX;
+          var offsetPer = (offsetX / $slider.width()) * 100;
+        }
+        
         var val = toNearest((offsetPer / 100) * (self._settings.max - self._settings.min), self._settings.step) + self._settings.min;
         val = Math.min(self._settings.max,Math.max(self._settings.min,val));
         clearTimeout(activeTimer);
@@ -150,18 +186,31 @@ $add.SliderObj = function(settings){
         self.value = val;
       });
     } else {
-      var $handle1 = $("<div class='addui-slider-handle'><div class='addui-slider-value'><span style='font-size: "+this._settings.fontsize+"px'></span></div></div>").appendTo($track);
+      var $handle1 = $("<div class='addui-slider-handle addui-slider-handle-l'><div class='addui-slider-value'><span style='font-size: "+this._settings.fontsize+"px'></span></div></div>").appendTo($track);
       var activeTimer1 = null;
+      
+      
       function dragHandler1(e){
         e.preventDefault();
-        if(e.type == "touchmove")
-          var x = e.originalEvent.changedTouches[0].pageX;
-        else
-          var x = e.pageX;
-        var sliderX = $slider.offset().left;
-        var offsetX = x - sliderX;
-        var range = self._settings.max - self._settings.min;
-        var offsetPer = (offsetX / $slider.width()) * 100;
+        if(self._settings.direction == "vertical"){
+          if(e.type == "touchmove")
+            var y = e.originalEvent.changedTouches[0].pageY;
+          else
+            var y = e.pageY;
+          var sliderY = $slider.offset().top + $slider.height();
+          var offsetY = sliderY - y;
+          var range = self._settings.max - self._settings.min;
+          var offsetPer = (offsetY / $slider.height()) * 100;
+        } else {
+          if(e.type == "touchmove")
+            var x = e.originalEvent.changedTouches[0].pageX;
+          else
+            var x = e.pageX;
+          var sliderX = $slider.offset().left;
+          var offsetX = x - sliderX;
+          var range = self._settings.max - self._settings.min;
+          var offsetPer = (offsetX / $slider.width()) * 100;
+        }
         var offsetVal = offsetPer / 100 * range;
         var val = toNearest(offsetVal + self._settings.min, self._settings.step);
         val = Math.min(self._settings.max, Math.max(self._settings.min, val));
@@ -170,6 +219,8 @@ $add.SliderObj = function(settings){
           higherVal = val;
         self.value = val+","+higherVal;
       };
+      
+      
       function dragStopHandler1(e){
         $(window).off("mousemove touchmove", dragHandler1);
         activeTimer1 = setTimeout(function(){
@@ -183,18 +234,30 @@ $add.SliderObj = function(settings){
         $(window).one("mouseup touchend", dragStopHandler1);
       });
       
-      var $handle2 = $("<div class='addui-slider-handle'><div class='addui-slider-value'><span style='font-size: "+this._settings.fontsize+"px'></span></div></div>").appendTo($track);
+      var $handle2 = $("<div class='addui-slider-handle addui-slider-handle-h'><div class='addui-slider-value'><span style='font-size: "+this._settings.fontsize+"px'></span></div></div>").appendTo($track);
       var activeTimer2 = null;
+      
+      
       function dragHandler2(e){
         e.preventDefault();
-        if(e.type == "touchmove")
-          var x = e.originalEvent.changedTouches[0].pageX;
-        else
-          var x = e.pageX;
-        var sliderX = $slider.offset().left;
-        var offsetX = x - sliderX;
+        if(self._settings.direction == "vertical"){
+          if(e.type == "touchmove")
+            var y = e.originalEvent.changedTouches[0].pageY;
+          else
+            var y = e.pageY;
+          var sliderY = $slider.offset().top + $slider.height();
+          var offsetY = sliderY - y;
+          var offsetPer = (offsetY / $slider.height()) * 100;
+        } else {
+          if(e.type == "touchmove")
+            var x = e.originalEvent.changedTouches[0].pageX;
+          else
+            var x = e.pageX;
+          var sliderX = $slider.offset().left;
+          var offsetX = x - sliderX;
+          var offsetPer = (offsetX / $slider.width()) * 100;
+        }
         var range = self._settings.max - self._settings.min;
-        var offsetPer = (offsetX / $slider.width()) * 100;
         var offsetVal = offsetPer / 100 * range;
         var val = toNearest(offsetVal + self._settings.min, self._settings.step);
         val = Math.min(self._settings.max, Math.max(self._settings.min, val));
@@ -203,6 +266,8 @@ $add.SliderObj = function(settings){
           lowerVal = val;
         self.value = lowerVal+","+val;
       };
+      
+      
       function dragStopHandler2(e){
         $(window).off("mousemove touchmove", dragHandler2);
         activeTimer2 = setTimeout(function(){
@@ -215,7 +280,6 @@ $add.SliderObj = function(settings){
         $(window).on("mousemove touchmove dragmove", dragHandler2);
         $(window).one("mouseup touchend", dragStopHandler2);
       });
-      
     }
     return $slider;
   };
