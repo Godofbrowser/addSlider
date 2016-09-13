@@ -48,25 +48,77 @@ You can pass these settings into the plugin use `data-{setting_name}="{setting_v
 
 **JavaScript**
 ```JavaScript
-
+function betterParseFloat(x){
+  if(isNaN(parseFloat(x)) && x.length > 0)
+   return betterParseFloat(x.substr(1));
+  return parseFloat(x);
+}
+function usd(x){
+  x = betterParseFloat(x);
+  if(isNaN(x))
+   return "$0.00";
+  var dollars = Math.floor(x);
+  var cents = Math.round((x - dollars) * 100) + "";
+  if(cents.length==1)cents = "0"+cents;
+  return "$"+dollars+"."+cents;
+}
 ```
 
 **HTML**
 ```HTML
-
+<input
+ data-addui='slider'
+ data-formatter='usd'
+ data-fontsize='14'
+ data-step='0.01'
+ data-min='5'
+ data-max='20'
+ value='10'
+/>
 ```
 
 ![](res/usd.gif)
 
 ##Ranges
 
+**HTML**
+```HTML
+<input
+ data-addui='slider'
+ data-min='-5'
+ data-max='5'
+ data-range='true'
+ value='-2,2'
+/>
+```
 ![](res/range.gif)
 
 ##Vertical Slider
 
+**HTML**
+```HTML
+<input
+ data-addui='slider'
+ data-direction='vertical'
+/>
+```
+
 ![](res/vertical.gif)
 
 ##Vertical Range
+
+**HTML**
+```HTML
+<input
+ data-addui='slider'
+ data-direction='vertical'
+ data-range='true'
+ data-min='20'
+ data-max='40'
+ data-step='0.5'
+ value='25,35'
+/>
+```
 
 ![](res/vertical-range.gif)
 
