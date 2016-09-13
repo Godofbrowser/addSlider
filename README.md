@@ -1,5 +1,7 @@
 #add Slider
 
+> *2.0.1*
+
 ```
 <input data-addui='slider' />
 ```
